@@ -8,3 +8,4 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   console.log('测试2 脚本已加载');
 });
+1
