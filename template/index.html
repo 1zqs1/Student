@@ -3,12 +3,62 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>模板页面</title>
+    <title>个人简介模板</title>
+    <style>
+      body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin: 0; padding: 20px; background: #f7f7f9; color: #222; }
+      .card { max-width: 720px; margin: 24px auto; background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+      .profile { display: flex; gap: 20px; align-items: center; }
+      .avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; }
+      .name { font-size: 1.4rem; margin: 0; }
+      .title { margin: 4px 0 8px; color: #555; }
+      .bio { margin: 8px 0; }
+      .skills { margin: 12px 0; padding: 0; list-style: none; display:flex; gap:8px; flex-wrap:wrap }
+      .skills li { background:#eef; color:#135; padding:6px 10px; border-radius:20px; font-size:0.9rem }
+      .actions { margin-top: 12px; display:flex; gap:8px }
+      .btn { padding:8px 12px; border-radius:6px; border: none; cursor: pointer }
+      .btn.secondary { background:#eee }
+      .section { margin-top:16px }
+      .theme-dark { background:#0f1720; color:#e6eef8 }
+    </style>
   </head>
   <body>
-    <h1>模板页面 (Template)</h1>
-    <p>这是一个最小的 HTML 模板，用于快速开始测试与练习。</p>
-    <button id="btn">点击我</button>
+    <div class="card" id="profileCard">
+      <div class="profile">
+        <img class="avatar" id="avatar" src="https://avatars.githubusercontent.com/u/583231?v=4" alt="头像">
+        <div>
+          <h2 class="name" id="fullName">示例姓名</h2>
+          <div class="title" id="title">前端开发 | 个人简介页面</div>
+          <p class="bio" id="bio">这是一个简单的个人简介模板，展示个人信息、技能与联系方式。你可以在 `template/app.js` 中修改默认内容。</p>
+          <div class="actions">
+            <button class="btn" id="toggleTheme">切换主题</button>
+            <button class="btn secondary" id="showContact">显示联系方式</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>技能</h3>
+        <ul class="skills" id="skillsList">
+          <li>HTML</li>
+          <li>CSS</li>
+          <li>JavaScript</li>
+        </ul>
+      </div>
+
+      <div class="section" id="projectsSection">
+        <h3>项目</h3>
+        <ul>
+          <li><a href="#" id="proj1">示例项目 1</a></li>
+        </ul>
+      </div>
+
+      <div class="section" id="contact" style="display:none">
+        <h3>联系方式</h3>
+        <p>Email: <a href="mailto:example@example.com" id="email">example@example.com</a></p>
+        <p>GitHub: <a href="https://github.com/" id="github">github.com/你的用户名</a></p>
+      </div>
+    </div>
+
     <script src="app.js"></script>
   </body>
 </html>
