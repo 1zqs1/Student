@@ -1,14 +1,297 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>测试2 - 基于模板</title>
+    <title>访客填写版个人简介</title>
+    <style>
+      :root {
+        --bg: #f2f5f9;
+        --paper: #ffffff;
+        --text: #3e3e3e;
+        --muted: #777;
+        --accent: #7da6d8;
+        --accent-soft: #dce8f7;
+        --line: #e8ecf2;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .page {
+        width: min(1240px, calc(100% - 24px));
+        margin: 12px auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+
+      .card {
+        background: var(--paper);
+        box-shadow: 0 3px 20px rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .header-strip {
+        height: 42px;
+        background: var(--accent);
+        position: relative;
+      }
+
+      .header-strip::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+        border-top: 42px solid #d8e4f3;
+        border-right: 60px solid transparent;
+      }
+
+      .content {
+        padding: 32px 34px 40px;
+      }
+
+      h1, h2, h3 { margin: 0; }
+
+      .section {
+        margin-top: 28px;
+      }
+
+      .section-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 172px;
+        padding: 8px 18px 8px 14px;
+        background: var(--accent);
+        color: #fff;
+        font-size: 20px;
+        font-weight: 700;
+        clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%);
+      }
+
+      .form {
+        display: grid;
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        font-weight: 600;
+      }
+
+      input, textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 12px 14px;
+        font: inherit;
+        color: var(--text);
+        background: #fff;
+        outline: none;
+      }
+
+      input:focus, textarea:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
+      }
+
+      textarea { min-height: 92px; resize: vertical; }
+
+      input[type="file"] { padding: 10px; }
+
+      .buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        border: none;
+        border-radius: 10px;
+        padding: 12px 18px;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      #saveBtn {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      #resetBtn {
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--text);
+      }
+
+      .preview-top {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 28px;
+        align-items: start;
+      }
+
+      .photo-wrap {
+        width: 140px;
+        height: 180px;
+        padding: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        background: #fff;
+      }
+
+      .photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background: var(--accent-soft);
+      }
+
+      .name {
+        margin: 0;
+        padding-top: 10px;
+        font-size: 42px;
+        color: var(--accent);
+        font-weight: 700;
+        letter-spacing: 2px;
+      }
+
+      .info-grid {
+        margin-top: 46px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px 40px;
+      }
+
+      .info-item {
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      .info-item strong {
+        font-weight: 700;
+      }
+
+      .entry {
+        margin-top: 16px;
+      }
+
+      .entry-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .entry-sub {
+        margin-top: 8px;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .entry-desc {
+        margin-top: 10px;
+        color: var(--muted);
+        line-height: 1.85;
+      }
+
+      .list {
+        margin: 10px 0 0;
+        padding-left: 20px;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .list li + li { margin-top: 4px; }
+
+      .status {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .hint {
+        color: var(--muted);
+        line-height: 1.7;
+        margin-top: 8px;
+      }
+
+      @media (max-width: 960px) {
+        .page { grid-template-columns: 1fr; }
+      }
+
+      @media (max-width: 780px) {
+        .content { padding: 24px 18px 32px; }
+        .preview-top { grid-template-columns: 1fr; }
+        .name { font-size: 34px; }
+        .info-grid { margin-top: 22px; gap: 10px 18px; }
+        .row { grid-template-columns: 1fr; }
+      }
+    </style>
   </head>
   <body>
-    <h1>测试2 - 基于模板</h1>
-    <p>请勿直接在此仓库修改；若需更改请通过 Fork + PR。</p>
-    <button id="btn">点击我（测试2）</button>
-    <script src="app.js"></script>
-  </body>
-</html>
+    <main class="page">
+      <section class="card">
+        <div class="header-strip"></div>
+        <div class="content">
+          <h1 style="font-size:28px;color:var(--accent);">访客填写页</h1>
+          <p class="hint">左侧填写信息，右侧会实时显示成简历风格的个人简介。</p>
+
+          <div class="section">
+            <div class="section-title">基础信息</div>
+            <form id="profileForm" class="form">
+              <div class="row">
+                <label>姓名<input id="nameInput" type="text" placeholder="请输入姓名" /></label>
+                <label>身份/职业<input id="titleInput" type="text" placeholder="请输入身份或职业" /></label>
+              </div>
+              <div class="row">
+                <label>年龄<input id="ageInput" type="text" placeholder="请输入年龄" /></label>
+                <label>现所在地<input id="locationInput" type="text" placeholder="请输入现所在地" /></label>
+              </div>
+              <div class="row">
+                <label>电话<input id="phoneInput" type="text" placeholder="请输入电话" /></label>
+                <label>邮箱<input id="emailInput" type="email" placeholder="请输入邮箱" /></label>
+              </div>
+              <div class="row">
+                <label>政治面貌<input id="politicsInput" type="text" placeholder="请输入政治面貌" /></label>
+                <label>民族<input id="nationInput" type="text" placeholder="请输入民族" /></label>
+              </div>
+              <label>上传头像<input id="avatarInput" type="file" accept="image/*" /></label>
+              <label>个人简介<textarea id="bioInput" placeholder="写一段介绍自己的话"></textarea></label>
+              <label>技能关键词<input id="skillsInput" type="text" placeholder="例如：HTML, CSS, JavaScript" /></label>
+              <div class="row">
+                <label>GitHub<input id="githubInput" type="url" placeholder="https://github.com/yourname" /></label>
+                <label>兴趣方向<input id="interestInput" type="text" placeholder="例如：网页设计、摄影" /></label>
+              </div>
+
+              <div class="buttons">
+                <button id="saveBtn" type="submit">生成预览</button>
+                <button id="resetBtn" type="button">清空内容</button>
+              </div>
+              <p id="statusText" class="status">请先填写信息。</p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+     
